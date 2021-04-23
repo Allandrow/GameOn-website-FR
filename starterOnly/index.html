@@ -60,7 +60,7 @@
               name="reserve"
               action="index.html"
               method="get"
-              onsubmit="return validate();"
+              onsubmit="return validate(event);"
             >
               <div
                 class="formData">
@@ -118,8 +118,8 @@
               </div>
 
               <div class="formData">
-                <input class="checkbox-input" type="checkbox" id="checkbox1" checked/>
-                <label class="checkbox2-label" for="checkbox1" required>
+                <input class="checkbox-input" type="checkbox" id="checkbox1" checked required/>
+                <label class="checkbox2-label" for="checkbox1">
                   <span class="checkbox-icon"></span>
                   J'ai lu et accepté les conditions d'utilisation.
                 </label>
@@ -131,7 +131,7 @@
                 </label>
                 <br>
               </div>
-              <input class="btn-submit" type="submit" class="button" value="C'est parti" />
+              <input class="button btn-submit" type="submit" value="C'est parti" />
             </form>
           </div>
         </div>
