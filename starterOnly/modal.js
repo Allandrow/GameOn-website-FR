@@ -33,7 +33,6 @@ function validate() {
   const firstName = document.getElementById('first').value;
   const lastName = document.getElementById('last').value;
   const email = document.getElementById('email').value;
-  const birthDate = document.getElementById('birthdate').value;
   const tournamentNumber = document.getElementById('quantity').value;
 
   // TESTS
@@ -43,14 +42,20 @@ function validate() {
   console.log(validTextInput(lastName));
   console.log('EMAIL');
   console.log(validEmail(email));
+  console.log('TOURNAMENT NUMBER');
+  console.log(validNumberInput(tournamentNumber));
 
   event.preventDefault();
 }
 
 function validTextInput(input) {
-  return (valid = input.length <= 1 ? false : true);
+  return input.length <= 1 ? false : true;
 }
 
 function validEmail(email) {
   return /\S+@+\S+\.\S+/.test(email);
+}
+
+function validNumberInput(input) {
+  return input.length !== 0 ? true : false;
 }
