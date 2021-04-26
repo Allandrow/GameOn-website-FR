@@ -28,7 +28,7 @@ function closeModal() {
 }
 
 // form validation on submit
-function validate(e) {
+function validate() {
   // Form inputs values
   const firstName = document.getElementById('first').value;
   const lastName = document.getElementById('last').value;
@@ -36,8 +36,21 @@ function validate(e) {
   const birthDate = document.getElementById('birthdate').value;
   const tournamentNumber = document.getElementById('quantity').value;
 
-  firstName.length <= 1 ? console.log('FAIL') : console.log('SUCCESS');
-  lastName.length <= 1 ? console.log('FAIL') : console.log('SUCCESS');
+  // TESTS
+  console.log('FIRST NAME');
+  console.log(validTextInput(firstName));
+  console.log('LAST NAME');
+  console.log(validTextInput(lastName));
+  console.log('EMAIL');
+  console.log(validEmail(email));
 
-  e.preventDefault();
+  event.preventDefault();
+}
+
+function validTextInput(input) {
+  return (valid = input.length <= 1 ? false : true);
+}
+
+function validEmail(email) {
+  return /\S+@+\S+\.\S+/.test(email);
 }
