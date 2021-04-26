@@ -53,7 +53,14 @@ function validTextInput(input) {
   return input.length <= 1 ? false : true;
 }
 
-// Check if email has valid syntax (any non whitepsace characters - @ - any non whitespace characters - . - any non whitespace characters)
+/* 
+  Check if email has valid syntax :
+  - any non whitepsace characters 
+  - @
+  - any non whitespace characters 
+  - . 
+  - any non whitespace characters
+*/
 function validEmail(email) {
   return /\S+@+\S+\.\S+/.test(email);
 }
