@@ -65,10 +65,17 @@ function validate() {
     },
   ];
 
-  console.log(formObjects);
+  let validationsPassed = 0;
 
-  // prevents form submitting
-  event.preventDefault();
+  formObjects.forEach((input) => {
+    input.validation ? validationsPassed++ : console.log('fail');
+  });
+
+  console.log('length ' + formObjects.length);
+
+  if (validationsPassed < formObjects.length) {
+    event.preventDefault();
+  }
 }
 
 function isTextInputValid(input) {
