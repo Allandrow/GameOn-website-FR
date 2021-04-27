@@ -67,7 +67,7 @@ function validEmail(email) {
 
 // Check if input is empty
 function validNumberInput(input) {
-  return input.length !== 0 ? true : false;
+  return input.length !== 0;
 }
 
 // Check if radio group has a selection
@@ -85,5 +85,5 @@ function validRadioSelected(group) {
 
 // Checkbox status
 function checkboxChecked(input) {
-  return input.checked ? true : false;
+  return input.checked;
 }
