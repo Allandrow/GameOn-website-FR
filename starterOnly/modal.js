@@ -33,45 +33,74 @@ function validate() {
   const firstName = document.getElementById('first').value;
   const lastName = document.getElementById('last').value;
   const email = document.getElementById('email').value;
+  const birthDate = document.getElementById('birthdate').value;
   const tournamentNumber = document.getElementById('quantity').value;
   const radioLocationSelected = document.querySelector('input[name="location"]:checked');
   const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
-  // Form values and validation methods array
-  const formObjects = [
+  // Stores required inputs :
+  // - element if radio/checkbox checked, or null
+  // - value if another input type
+  // - result of validation function
+  // - data-error message
+  const formArray = [
     {
+      id: 0,
       value: firstName,
       validation: isTextInputValid(firstName),
+      error: 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
     },
     {
+      id: 1,
       value: lastName,
       validation: isTextInputValid(lastName),
+      error: 'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
     },
     {
+      id: 2,
       value: email,
       validation: isEmailValid(email),
+      error: 'Veuillez saisir un email valide.',
     },
     {
+      id: 3,
+      value: birthDate,
+      validation: isInputFilled(birthDate),
+      error: 'Vous devez entrer votre date de naissance.',
+    },
+    {
+      id: 4,
       value: tournamentNumber,
-      validation: isNumberInputFilled(tournamentNumber),
+      validation: isInputFilled(tournamentNumber),
+      error: 'Veuillez remplir le champ avec un nombre',
     },
     {
+      id: 5,
       value: radioLocationSelected,
       validation: isInputChecked(radioLocationSelected),
+      error: 'Vous devez choisir une option',
     },
     {
+      id: 6,
       value: conditionCheckBox,
       validation: isInputChecked(conditionCheckBox),
+      error: 'Vous devez vérifier que vous acceptez les termes et conditions.',
     },
   ];
 
   let validationsPassed = 0;
 
-  formObjects.forEach((input) => {
-    input.validation ? validationsPassed++ : console.log('fail');
+  formArray.forEach((input) => {
+    if (input.validation) {
+      validationsPassed++;
+      formData[input.id].setAttribute('data-error-visible', 'false');
+    } else {
+      formData[input.id].setAttribute('data-error-visible', 'true');
+      formData[input.id].setAttribute('data-error', input.error);
+    }
   });
 
-  if (validationsPassed < formObjects.length) {
+  if (validationsPassed < formArray.length) {
     event.preventDefault();
   }
 }
@@ -96,7 +125,7 @@ function isEmailValid(email) {
 }
 
 // Check if input is empty
-function isNumberInputFilled(input) {
+function isInputFilled(input) {
   return input.length !== 0;
 }
 
