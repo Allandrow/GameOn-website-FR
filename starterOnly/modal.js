@@ -34,34 +34,37 @@ function validate() {
   const lastName = document.getElementById('last').value;
   const email = document.getElementById('email').value;
   const tournamentNumber = document.getElementById('quantity').value;
-  const radioGroupLocation = document.querySelectorAll("input[name='location']");
-  const conditionCheckBox = document.getElementById('checkbox1');
+  const radioLocationSelected = document.querySelector('input[name="location"]:checked');
+  const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
   // TESTS
-  console.log('TEST FIRST NAME = ' + validTextInput(firstName));
-  console.log('LAST NAME = ' + validTextInput(lastName));
-  console.log('EMAIL = ' + validTextInput(email));
-  console.log('TOURNAMENT NUMBER = ' + validNumberInput(tournamentNumber));
-  console.log('VILLE SELECTIONNEE = ' + validRadioSelected(radioGroupLocation));
-  console.log('CGU VALIDEES = ' + checkboxChecked(conditionCheckBox));
+  console.log('PRENOM VALID ? ' + isTextInputValid(firstName));
+  console.log('NOM VALIDE ? ' + isTextInputValid(lastName));
+  // console.log('EMAIL = ' + validTextInput(email));
+  // console.log('TOURNAMENT NUMBER = ' + validNumberInput(tournamentNumber));
+  // console.log('VILLE SELECTIONNEE = ' + isInputChecked(radioLocationSelected));
+  // console.log('CGU VALIDEES = ' + isInputChecked(conditionCheckBox));
 
+  // prevents form submitting
   event.preventDefault();
 }
 
-// Check if input value is less than 2 characters
-function validTextInput(input) {
-  return input.length <= 1 ? false : true;
+function isTextInputValid(input) {
+  return hasMinLength(input) ? isAlphabetic(input) : false;
 }
 
-/* 
-  Check if email has valid syntax :
-  - any non whitepsace characters 
-  - @
-  - any non whitespace characters 
-  - . 
-  - any non whitespace characters
-*/
-function validEmail(email) {
+function hasMinLength(string) {
+  return string.length > 1;
+}
+
+// True if string starts with a letter, case insensitive
+function isAlphabetic(string) {
+  const regex = /^[a-z]/i;
+  return regex.test(string);
+}
+
+// True if email follows pattern nonWhitespace@nonWhitespace.nonWhitespace
+function isEmailValid(email) {
   return /\S+@+\S+\.\S+/.test(email);
 }
 
@@ -70,20 +73,11 @@ function validNumberInput(input) {
   return input.length !== 0;
 }
 
-// Check if radio group has a selection
-function validRadioSelected(group) {
-  let selected = false;
-
-  group.forEach((radio) => {
-    if (radio.checked) {
-      selected = true;
-    }
-  });
-
-  return selected;
-}
-
-// Checkbox status
-function checkboxChecked(input) {
-  return input.checked;
+function isInputChecked(input) {
+  /*
+    Verifies if :
+    - radio group has a selection or
+    - checkbox is checked
+  */
+  return input !== null;
 }
