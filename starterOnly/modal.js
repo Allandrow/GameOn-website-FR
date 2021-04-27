@@ -71,8 +71,6 @@ function validate() {
     input.validation ? validationsPassed++ : console.log('fail');
   });
 
-  console.log('length ' + formObjects.length);
-
   if (validationsPassed < formObjects.length) {
     event.preventDefault();
   }
