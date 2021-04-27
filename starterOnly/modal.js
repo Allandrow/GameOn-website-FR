@@ -37,13 +37,35 @@ function validate() {
   const radioLocationSelected = document.querySelector('input[name="location"]:checked');
   const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
-  // TESTS
-  console.log('PRENOM VALID ? ' + isTextInputValid(firstName));
-  console.log('NOM VALIDE ? ' + isTextInputValid(lastName));
-  // console.log('EMAIL = ' + validTextInput(email));
-  // console.log('TOURNAMENT NUMBER = ' + validNumberInput(tournamentNumber));
-  // console.log('VILLE SELECTIONNEE = ' + isInputChecked(radioLocationSelected));
-  // console.log('CGU VALIDEES = ' + isInputChecked(conditionCheckBox));
+  // Form values and validation methods array
+  const formObjects = [
+    {
+      value: firstName,
+      validation: isTextInputValid(firstName),
+    },
+    {
+      value: lastName,
+      validation: isTextInputValid(lastName),
+    },
+    {
+      value: email,
+      validation: isEmailValid(email),
+    },
+    {
+      value: tournamentNumber,
+      validation: isNumberInputFilled(tournamentNumber),
+    },
+    {
+      value: radioLocationSelected,
+      validation: isInputChecked(radioLocationSelected),
+    },
+    {
+      value: conditionCheckBox,
+      validation: isInputChecked(conditionCheckBox),
+    },
+  ];
+
+  console.log(formObjects);
 
   // prevents form submitting
   event.preventDefault();
@@ -69,7 +91,7 @@ function isEmailValid(email) {
 }
 
 // Check if input is empty
-function validNumberInput(input) {
+function isNumberInputFilled(input) {
   return input.length !== 0;
 }
 
