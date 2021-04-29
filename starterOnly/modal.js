@@ -10,8 +10,10 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector('.bground');
 const modalBtn = document.querySelectorAll('.modal-btn');
+const modalBody = document.querySelector('.modal-body');
 const formData = document.querySelectorAll('.formData');
 const modalBtnClose = document.querySelector('.close');
+const modalBtnSubmit = document.querySelector('.btn-submit');
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
@@ -37,6 +39,8 @@ function validate() {
   const tournamentNumber = document.getElementById('quantity').value;
   const radioLocationSelected = document.querySelector('input[name="location"]:checked');
   const conditionCheckBox = document.querySelector('#checkbox1:checked');
+
+  let validationsPassed = true;
 
   // Stores required inputs :
   // - element if radio/checkbox checked, or null
@@ -88,21 +92,32 @@ function validate() {
     },
   ];
 
-  let validationsPassed = 0;
-
   formArray.forEach((input) => {
     if (input.validation) {
-      validationsPassed++;
       formData[input.id].setAttribute('data-error-visible', 'false');
     } else {
+      validationsPassed = false;
       formData[input.id].setAttribute('data-error-visible', 'true');
       formData[input.id].setAttribute('data-error', input.error);
     }
   });
 
-  if (validationsPassed < formArray.length) {
-    event.preventDefault();
+  if (validationsPassed) {
+    formData.forEach((group) => {
+      group.style['visibility'] = 'hidden';
+    });
+    const formSuccessMessage = document.createElement('div');
+    formSuccessMessage.style.textAlign = 'center';
+    formSuccessMessage.innerHTML = `
+      <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
+    `;
+    modalBody.appendChild(formSuccessMessage);
+    modalBtnSubmit.setAttribute('value', 'Fermer');
+
+    modalBtnSubmit.addEventListener('click', closeModal);
   }
+
+  event.preventDefault();
 }
 
 function isTextInputValid(input) {
