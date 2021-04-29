@@ -27,6 +27,7 @@ function launchModal() {
 // close modal form
 function closeModal() {
   modalbg.style.display = 'none';
+  event.stopPropagation();
 }
 
 // form validation on submit
@@ -40,8 +41,6 @@ function validate() {
   const radioLocationSelected = document.querySelector('input[name="location"]:checked');
   const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
-  let validationsPassed = true;
-
   // Stores required inputs :
   // - element if radio/checkbox checked, or null
   // - value if another input type
@@ -49,59 +48,59 @@ function validate() {
   // - data-error message
   const formArray = [
     {
-      id: 0,
       value: firstName,
       validation: isTextInputValid(firstName),
       error: 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
     },
     {
-      id: 1,
       value: lastName,
       validation: isTextInputValid(lastName),
       error: 'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
     },
     {
-      id: 2,
       value: email,
       validation: isEmailValid(email),
       error: 'Veuillez saisir un email valide.',
     },
     {
-      id: 3,
       value: birthDate,
       validation: isInputFilled(birthDate),
       error: 'Vous devez entrer votre date de naissance.',
     },
     {
-      id: 4,
       value: tournamentNumber,
       validation: isInputFilled(tournamentNumber),
       error: 'Veuillez remplir le champ avec un nombre',
     },
     {
-      id: 5,
       value: radioLocationSelected,
       validation: isInputChecked(radioLocationSelected),
       error: 'Vous devez choisir une option',
     },
     {
-      id: 6,
       value: conditionCheckBox,
       validation: isInputChecked(conditionCheckBox),
       error: 'Vous devez vérifier que vous acceptez les termes et conditions.',
     },
   ];
 
-  formArray.forEach((input) => {
+  // changes to false during the loop through formArray, if it stays true then it hides the form to display success message
+  let validationsPassed = true;
+
+  // Loops through each input object and checks if it validates
+  // If not, sets validationsPassed to false and adds attributes to html for error messages
+  formArray.forEach((input, index) => {
     if (input.validation) {
-      formData[input.id].setAttribute('data-error-visible', 'false');
+      formData[index].setAttribute('data-error-visible', 'false');
     } else {
       validationsPassed = false;
-      formData[input.id].setAttribute('data-error-visible', 'true');
-      formData[input.id].setAttribute('data-error', input.error);
+      formData[index].setAttribute('data-error-visible', 'true');
+      formData[index].setAttribute('data-error', input.error);
     }
   });
 
+  // Hides the form and display success message
+  // Changes the value of submit input and adds an eventlistener that closes the modal on click
   if (validationsPassed) {
     formData.forEach((group) => {
       group.style['visibility'] = 'hidden';
@@ -120,10 +119,12 @@ function validate() {
   event.preventDefault();
 }
 
+// Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
 function isTextInputValid(input) {
   return hasMinLength(input) ? isAlphabetic(input) : false;
 }
 
+// True if string has at least a length of 2
 function hasMinLength(string) {
   return string.length > 1;
 }
