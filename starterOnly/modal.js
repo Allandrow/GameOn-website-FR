@@ -18,26 +18,39 @@
   const modalBtnSubmit = document.querySelector('.btn-submit');
   const form = document.querySelector('form');
 
+  // close modal form
+  const closeModal = () => (modalbg.style.display = 'none');
+
+  // launch modal form
+  const launchModal = () => (modalbg.style.display = 'block');
+
   // launch modal event
   modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
   modalBtnClose.addEventListener('click', closeModal);
 
-  // launch modal form
-  function launchModal() {
-    modalbg.style.display = 'block';
-  }
-
   // FORM SUBMIT
   form.addEventListener('submit', handleSubmit);
 
-  // close modal form
-  function closeModal() {
-    modalbg.style.display = 'none';
-    event.stopPropagation();
-  }
+  // True if value has at least a length of 2
+  const hasMinLength = (value) => value.length > 1;
 
-  // Check if input is empty
-  const isInputFilled = (input) => input.length !== 0;
+  // True if string starts with a letter, case insensitive
+  const isAlphabetic = (value) => /^[a-z]/i.test(value);
+
+  // Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
+  const isTextInputValid = (input) => (hasMinLength(input) ? isAlphabetic(input) : false);
+
+  // Check if value is empty
+  const isInputFilled = (value) => value.length !== 0;
+
+  // True if email follows pattern nonWhitespace@nonWhitespace.nonWhitespace
+  const isEmailValid = (value) => /\S+@+\S+\.\S+/.test(value);
+
+  // Check if radio group has a selection of if checkbox is checked
+  const isInputChecked = (value) => value !== null;
+
+  // Changes the value of the input to 'Fermer'
+  const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
 
   // form validation on submit
   function handleSubmit(e) {
@@ -105,36 +118,9 @@
     }
   }
 
-  // Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
-  function isTextInputValid(input) {
-    return hasMinLength(input) ? isAlphabetic(input) : false;
-  }
-
-  // True if string has at least a length of 2
-  function hasMinLength(string) {
-    return string.length > 1;
-  }
-
-  // True if string starts with a letter, case insensitive
-  function isAlphabetic(string) {
-    const regex = /^[a-z]/i;
-    return regex.test(string);
-  }
-
-  // True if email follows pattern nonWhitespace@nonWhitespace.nonWhitespace
-  function isEmailValid(email) {
-    return /\S+@+\S+\.\S+/.test(email);
-  }
-
-  // Check if radio group has a selection of if checkbox is checked
-  function isInputChecked(input) {
-    return input !== null;
-  }
-
+  // Loops through each input object and checks if it validates
+  // If not, sets pass to false and adds attributes to html for error messages
   function isValidationTrue(array) {
-    // Loops through each input object and checks if it validates
-    // If not, sets pass to false and adds attributes to html for error messages
-
     let pass = true;
 
     array.forEach((input, index) => {
@@ -165,10 +151,5 @@
       <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
     `;
     modalBody.appendChild(formSuccessMessage);
-  }
-
-  // Changes the value of the input to 'Fermer'
-  function changesInputAttribute() {
-    modalBtnSubmit.setAttribute('value', 'Fermer');
   }
 })();
