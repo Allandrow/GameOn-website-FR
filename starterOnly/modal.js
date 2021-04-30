@@ -28,9 +28,6 @@
   modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
   modalBtnClose.addEventListener('click', closeModal);
 
-  // FORM SUBMIT
-  form.addEventListener('submit', handleSubmit);
-
   // True if value has at least a length of 2
   const hasMinLength = (value) => value.length > 1;
 
@@ -52,6 +49,9 @@
   // Changes the value of the input to 'Fermer'
   const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
 
+  // FORM SUBMIT
+  form.addEventListener('submit', handleSubmit);
+
   // form validation on submit
   function handleSubmit(e) {
     // Form inputs values
@@ -72,37 +72,37 @@
     const formArray = [
       {
         value: firstName,
-        validation: isTextInputValid(firstName),
+        validation: isTextInputValid,
         error: 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
       },
       {
         value: lastName,
-        validation: isTextInputValid(lastName),
+        validation: isTextInputValid,
         error: 'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
       },
       {
         value: email,
-        validation: isEmailValid(email),
+        validation: isEmailValid,
         error: 'Veuillez saisir un email valide.',
       },
       {
         value: birthDate,
-        validation: isInputFilled(birthDate),
+        validation: isInputFilled,
         error: 'Vous devez entrer votre date de naissance.',
       },
       {
         value: tournamentNumber,
-        validation: isInputFilled(tournamentNumber),
+        validation: isInputFilled,
         error: 'Veuillez remplir le champ avec un nombre',
       },
       {
         value: radioLocationSelected,
-        validation: isInputChecked(radioLocationSelected),
+        validation: isInputChecked,
         error: 'Vous devez choisir une option',
       },
       {
         value: conditionCheckBox,
-        validation: isInputChecked(conditionCheckBox),
+        validation: isInputChecked,
         error: 'Vous devez vérifier que vous acceptez les termes et conditions.',
       },
     ];
@@ -124,7 +124,7 @@
     let pass = true;
 
     array.forEach((input, index) => {
-      if (input.validation) {
+      if (input.validation(input.value)) {
         formData[index].setAttribute('data-error-visible', 'false');
       } else {
         formData[index].setAttribute('data-error-visible', 'true');
