@@ -99,19 +99,12 @@ function validate() {
     }
   });
 
-  // Hides the form and display success message
-  // Changes the value of submit input and adds an eventlistener that closes the modal on click
   if (validationsPassed) {
-    formData.forEach((group) => {
-      group.style['visibility'] = 'hidden';
-    });
-    const formSuccessMessage = document.createElement('div');
-    formSuccessMessage.style.textAlign = 'center';
-    formSuccessMessage.innerHTML = `
-      <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
-    `;
-    modalBody.appendChild(formSuccessMessage);
-    modalBtnSubmit.setAttribute('value', 'Fermer');
+    hidesForm();
+
+    createSuccessMessage();
+
+    changesInputAttribute();
 
     modalBtnSubmit.addEventListener('click', closeModal);
   }
@@ -145,11 +138,29 @@ function isInputFilled(input) {
   return input.length !== 0;
 }
 
+// Check if radio group has a selection of if checkbox is checked
 function isInputChecked(input) {
-  /*
-    Verifies if :
-    - radio group has a selection or
-    - checkbox is checked
-  */
   return input !== null;
+}
+
+// Hides every div.formData
+function hidesForm() {
+  formData.forEach((inputGroup) => {
+    inputGroup.style['visibility'] = 'hidden';
+  });
+}
+
+// Create a new element with a text that displays the success of the form submission
+function createSuccessMessage() {
+  const formSuccessMessage = document.createElement('div');
+  formSuccessMessage.style.textAlign = 'center';
+  formSuccessMessage.innerHTML = `
+    <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
+  `;
+  modalBody.appendChild(formSuccessMessage);
+}
+
+// Changes the value of the input to 'Fermer'
+function changesInputAttribute() {
+  modalBtnSubmit.setAttribute('value', 'Fermer');
 }
