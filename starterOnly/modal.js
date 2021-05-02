@@ -1,15 +1,5 @@
 // Limits the scope of var declarations
 (function () {
-  function editNav() {
-    console.log('hey');
-    var x = document.getElementById('myTopnav');
-    if (x.className === 'topnav') {
-      x.className += ' responsive';
-    } else {
-      x.className = 'topnav';
-    }
-  }
-
   /*
     DOM Elements  
   */
@@ -21,6 +11,19 @@
   const formData = document.querySelectorAll('.formData');
   const modalBtnClose = document.querySelector('.close');
   const modalBtnSubmit = document.querySelector('.btn-submit');
+
+  /*
+    Toggle nav display on mobile
+  */
+  function editNav() {
+    console.log('hey');
+    var x = document.getElementById('myTopnav');
+    if (x.className === 'topnav') {
+      x.className += ' responsive';
+    } else {
+      x.className = 'topnav';
+    }
+  }
 
   /*
     Toggle modal display  
@@ -43,14 +46,14 @@
   const isTextInputValid = (input) => (hasMinLength(input) ? isAlphabetic(input) : false);
 
   /*
-    Check if value is empty
-  */
-  const isInputFilled = (value) => value.length !== 0;
-
-  /*
     True if value follows pattern nonWhitespace@nonWhitespace.nonWhitespace
   */
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
+
+  /*
+    Check if value is empty
+  */
+  const isInputFilled = (value) => value.length !== 0;
 
   /*
     Check if radio group has a selection or if checkbox is checked
@@ -67,9 +70,41 @@
   }
 
   /*
+    Create a new element with a text that displays the success of the form submission
+  */
+  function createSuccessMessageElement() {
+    const formSuccessMessage = document.createElement('div');
+    formSuccessMessage.style.textAlign = 'center';
+    formSuccessMessage.innerHTML = `
+        <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
+      `;
+    modalBody.appendChild(formSuccessMessage);
+  }
+
+  /*
     Changes the value of the input to 'Fermer'
   */
   const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
+
+  /* 
+    Loops through each input object and checks if it validates
+    If not, sets pass to false and adds attributes to html for error messages
+  */
+  function isValidationTrue(array) {
+    let areAllInputsValid = true;
+
+    array.forEach((input, index) => {
+      if (input.validation(input.value)) {
+        formData[index].setAttribute('data-error-visible', 'false');
+      } else {
+        formData[index].setAttribute('data-error-visible', 'true');
+        formData[index].setAttribute('data-error', input.error);
+        areAllInputsValid = false;
+      }
+    });
+
+    return areAllInputsValid;
+  }
 
   /*
     form validation on submit
@@ -85,12 +120,12 @@
     const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
     /*  
-      Stores required inputs :
-      - element if radio/checkbox checked, or null
-      - value if another input type
-      - result of validation function
-      - data-error message
-    */
+        Stores required inputs :
+        - element if radio/checkbox checked, or null
+        - value if another input type
+        - result of validation function
+        - data-error message
+      */
     const formRequiredInputs = [
       {
         value: firstName,
@@ -140,38 +175,6 @@
 
       modalBtnSubmit.addEventListener('click', toggleModal);
     }
-  }
-
-  /* 
-    Loops through each input object and checks if it validates
-    If not, sets pass to false and adds attributes to html for error messages
-  */
-  function isValidationTrue(array) {
-    let isValid = true;
-
-    array.forEach((input, index) => {
-      if (input.validation(input.value)) {
-        formData[index].setAttribute('data-error-visible', 'false');
-      } else {
-        formData[index].setAttribute('data-error-visible', 'true');
-        formData[index].setAttribute('data-error', input.error);
-        isValid = false;
-      }
-    });
-
-    return isValid;
-  }
-
-  /*
-    Create a new element with a text that displays the success of the form submission
-  */
-  function createSuccessMessageElement() {
-    const formSuccessMessage = document.createElement('div');
-    formSuccessMessage.style.textAlign = 'center';
-    formSuccessMessage.innerHTML = `
-      <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
-    `;
-    modalBody.appendChild(formSuccessMessage);
   }
 
   /*
