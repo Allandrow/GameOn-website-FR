@@ -119,7 +119,7 @@
         Stores required inputs :
         - element if radio/checkbox checked, or null
         - value if another input type
-        - result of validation function
+        - validation method for value
         - data-error message
       */
     const formRequiredInputs = [
