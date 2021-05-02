@@ -1,6 +1,7 @@
 // Limits the scope of var declarations
 (function () {
   function editNav() {
+    console.log('hey');
     var x = document.getElementById('myTopnav');
     if (x.className === 'topnav') {
       x.className += ' responsive';
@@ -9,47 +10,70 @@
     }
   }
 
-  // DOM Elements
+  /*
+    DOM Elements  
+  */
+  const nav = document.querySelector('.js-nav');
   const modalbg = document.querySelector('.bground');
   const modalBtn = document.querySelectorAll('.modal-btn');
   const modalBody = document.querySelector('.modal-body');
+  const form = document.querySelector('form');
   const formData = document.querySelectorAll('.formData');
   const modalBtnClose = document.querySelector('.close');
   const modalBtnSubmit = document.querySelector('.btn-submit');
-  const form = document.querySelector('form');
 
-  // Toggle modal display
+  /*
+    Toggle modal display  
+  */
   const toggleModal = () => modalbg.classList.toggle('modal-open');
 
-  // launch modal event
-  modalBtn.forEach((btn) => btn.addEventListener('click', toggleModal));
-  modalBtnClose.addEventListener('click', toggleModal);
-
-  // True if value has at least a length of 2
+  /*
+    True if value has at least a length of 2  
+  */
   const hasMinLength = (value) => value.length > 1;
 
-  // True if string starts with a letter, case insensitive
+  /*
+    True if value starts with a letter, case insensitive
+  */
   const isAlphabetic = (value) => /^[a-z]/i.test(value);
 
-  // Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
+  /*
+    Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
+  */
   const isTextInputValid = (input) => (hasMinLength(input) ? isAlphabetic(input) : false);
 
-  // Check if value is empty
+  /*
+    Check if value is empty
+  */
   const isInputFilled = (value) => value.length !== 0;
 
-  // True if email follows pattern nonWhitespace@nonWhitespace.nonWhitespace
-  const isEmailValid = (value) => /\S+@+\S+\.\S+/.test(value);
+  /*
+    True if value follows pattern nonWhitespace@nonWhitespace.nonWhitespace
+  */
+  const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
 
-  // Check if radio group has a selection of if checkbox is checked
+  /*
+    Check if radio group has a selection or if checkbox is checked
+  */
   const isInputChecked = (value) => value !== null;
 
-  // Changes the value of the input to 'Fermer'
+  /*
+    Hides every div.formData
+  */
+  function hidesForm() {
+    formData.forEach((inputGroup) => {
+      inputGroup.style['visibility'] = 'hidden';
+    });
+  }
+
+  /*
+    Changes the value of the input to 'Fermer'
+  */
   const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
 
-  // FORM SUBMIT
-  form.addEventListener('submit', handleSubmit);
-
-  // form validation on submit
+  /*
+    form validation on submit
+  */
   function handleSubmit(e) {
     // Form inputs values
     const firstName = document.getElementById('first').value;
@@ -60,13 +84,14 @@
     const radioLocationSelected = document.querySelector('input[name="location"]:checked');
     const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
-    e.preventDefault();
-    // Stores required inputs :
-    // - element if radio/checkbox checked, or null
-    // - value if another input type
-    // - result of validation function
-    // - data-error message
-    const formArray = [
+    /*  
+      Stores required inputs :
+      - element if radio/checkbox checked, or null
+      - value if another input type
+      - result of validation function
+      - data-error message
+    */
+    const formRequiredInputs = [
       {
         value: firstName,
         validation: isTextInputValid,
@@ -79,7 +104,7 @@
       },
       {
         value: email,
-        validation: isEmailValid,
+        validation: isEmail,
         error: 'Veuillez saisir un email valide.',
       },
       {
@@ -104,7 +129,9 @@
       },
     ];
 
-    if (isValidationTrue(formArray)) {
+    e.preventDefault();
+
+    if (isValidationTrue(formRequiredInputs)) {
       hidesForm();
 
       createSuccessMessageElement();
@@ -115,10 +142,12 @@
     }
   }
 
-  // Loops through each input object and checks if it validates
-  // If not, sets pass to false and adds attributes to html for error messages
+  /* 
+    Loops through each input object and checks if it validates
+    If not, sets pass to false and adds attributes to html for error messages
+  */
   function isValidationTrue(array) {
-    let pass = true;
+    let isValid = true;
 
     array.forEach((input, index) => {
       if (input.validation(input.value)) {
@@ -126,21 +155,16 @@
       } else {
         formData[index].setAttribute('data-error-visible', 'true');
         formData[index].setAttribute('data-error', input.error);
-        pass = false;
+        isValid = false;
       }
     });
 
-    return pass;
+    return isValid;
   }
 
-  // Hides every div.formData
-  function hidesForm() {
-    formData.forEach((inputGroup) => {
-      inputGroup.style['visibility'] = 'hidden';
-    });
-  }
-
-  // Create a new element with a text that displays the success of the form submission
+  /*
+    Create a new element with a text that displays the success of the form submission
+  */
   function createSuccessMessageElement() {
     const formSuccessMessage = document.createElement('div');
     formSuccessMessage.style.textAlign = 'center';
@@ -149,4 +173,21 @@
     `;
     modalBody.appendChild(formSuccessMessage);
   }
+
+  /*
+    Contains all event listeners
+   */
+  function loadEventListeners() {
+    // Display nav
+    nav.addEventListener('click', editNav);
+
+    // Modal display toggling
+    modalBtn.forEach((btn) => btn.addEventListener('click', toggleModal));
+    modalBtnClose.addEventListener('click', toggleModal);
+
+    // Form submission
+    form.addEventListener('submit', handleSubmit);
+  }
+
+  loadEventListeners();
 })();
