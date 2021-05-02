@@ -18,15 +18,12 @@
   const modalBtnSubmit = document.querySelector('.btn-submit');
   const form = document.querySelector('form');
 
-  // close modal form
-  const closeModal = () => (modalbg.style.display = 'none');
-
-  // launch modal form
-  const launchModal = () => (modalbg.style.display = 'block');
+  // Toggle modal display
+  const toggleModal = () => modalbg.classList.toggle('modal-open');
 
   // launch modal event
-  modalBtn.forEach((btn) => btn.addEventListener('click', launchModal));
-  modalBtnClose.addEventListener('click', closeModal);
+  modalBtn.forEach((btn) => btn.addEventListener('click', toggleModal));
+  modalBtnClose.addEventListener('click', toggleModal);
 
   // True if value has at least a length of 2
   const hasMinLength = (value) => value.length > 1;
@@ -114,7 +111,7 @@
 
       changesInputAttribute();
 
-      modalBtnSubmit.addEventListener('click', closeModal);
+      modalBtnSubmit.addEventListener('click', toggleModal);
     }
   }
 
