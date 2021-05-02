@@ -31,9 +31,9 @@
   const toggleModal = () => modalbg.classList.toggle('modal-open');
 
   /*
-    True if value has at least a length of 2  
+    True if value's length is superior to length(default 0)
   */
-  const hasMinLength = (value) => value.length > 1;
+  const hasMinLength = (value, length = 0) => value.length > length;
 
   /*
     True if value starts with a letter, case insensitive
@@ -43,7 +43,7 @@
   /*
     Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
   */
-  const isTextInputValid = (input) => (hasMinLength(input) ? isAlphabetic(input) : false);
+  const isTextInputValid = (input) => (hasMinLength(input, 1) ? isAlphabetic(input) : false);
 
   /*
     True if value follows pattern nonWhitespace@nonWhitespace.nonWhitespace
@@ -51,14 +51,30 @@
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
 
   /*
-    Check if value is empty
-  */
-  const isInputFilled = (value) => value.length !== 0;
-
-  /*
     Check if radio group has a selection or if checkbox is checked
   */
   const isInputChecked = (value) => value !== null;
+
+  /* 
+    Loops through each input object and checks if it validates
+    If not, sets pass to false and adds attributes to html for error messages
+  */
+  function isValidationTrue(array) {
+    let areAllInputsValid = true;
+
+    array.forEach((input, index) => {
+      if (input.validation(input.value)) {
+        formData[index].removeAttribute('data-error-visible');
+        formData[index].removeAttribute('data-error');
+      } else {
+        formData[index].setAttribute('data-error-visible', 'true');
+        formData[index].setAttribute('data-error', input.error);
+        areAllInputsValid = false;
+      }
+    });
+
+    return areAllInputsValid;
+  }
 
   /*
     Hides every div.formData
@@ -85,26 +101,6 @@
     Changes the value of the input to 'Fermer'
   */
   const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
-
-  /* 
-    Loops through each input object and checks if it validates
-    If not, sets pass to false and adds attributes to html for error messages
-  */
-  function isValidationTrue(array) {
-    let areAllInputsValid = true;
-
-    array.forEach((input, index) => {
-      if (input.validation(input.value)) {
-        formData[index].setAttribute('data-error-visible', 'false');
-      } else {
-        formData[index].setAttribute('data-error-visible', 'true');
-        formData[index].setAttribute('data-error', input.error);
-        areAllInputsValid = false;
-      }
-    });
-
-    return areAllInputsValid;
-  }
 
   /*
     form validation on submit
@@ -144,12 +140,12 @@
       },
       {
         value: birthDate,
-        validation: isInputFilled,
+        validation: hasMinLength,
         error: 'Vous devez entrer votre date de naissance.',
       },
       {
         value: tournamentNumber,
-        validation: isInputFilled,
+        validation: hasMinLength,
         error: 'Veuillez remplir le champ avec un nombre',
       },
       {
