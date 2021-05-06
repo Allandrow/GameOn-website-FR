@@ -221,7 +221,7 @@ input {
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
-  text-align: right;
+  text-align: left;
   line-height: 0.3;
   opacity: 0;
   transition: opacity 0.3s;
@@ -342,6 +342,14 @@ input[data-error]::after {
 .success {
   position: absolute;
   top: 50%;
+}
+
+@media screen and (max-width: 540px) {
+  .content {
+    margin-top: 70px;
+    border-radius: 0 0 10px 10px;
+    padding-bottom: 50px;
+  }
 }
 /* custom select styles */
 .custom-select {
