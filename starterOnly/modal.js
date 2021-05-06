@@ -22,16 +22,16 @@
 
   const hasMinLength = (value, length = 0) => value.length > length;
 
-  const isAlphabetic = (value) => /^[a-z]/i.test(value);
+  const isStartingWithLetter = (value) => /^[a-z]/i.test(value);
 
-  const isTextInputValid = (input) => (hasMinLength(input, 1) ? isAlphabetic(input) : false);
+  const isTextInputValid = (input) => (hasMinLength(input, 1) ? isStartingWithLetter(input) : false);
 
   // Tests if value consists of non-whitespace@non-whitespace.non-whitespace
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
 
   const isInputChecked = (value) => value !== null;
 
-  function isValidationTrue(array) {
+  function isValid(array) {
     let areAllInputsValid = true;
 
     array.forEach((input, index) => {
@@ -115,7 +115,7 @@
       },
     ];
 
-    if (isValidationTrue(formRequiredInputs)) {
+    if (isValid(formRequiredInputs)) {
       hidesForm();
 
       createSuccessMessageElement();
