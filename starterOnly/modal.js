@@ -26,6 +26,7 @@
 
   const isTextInputValid = (input) => (hasMinLength(input, 1) ? isAlphabetic(input) : false);
 
+  // Tests if value consists of non-whitespace@non-whitespace.non-whitespace
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
 
   const isInputChecked = (value) => value !== null;
