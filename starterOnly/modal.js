@@ -1,8 +1,4 @@
-// Limits the scope of var declarations
 (function () {
-  /*
-    DOM Elements  
-  */
   const nav = document.querySelector('.js-nav');
   const modalbg = document.querySelector('.bground');
   const modalBtn = document.querySelectorAll('.modal-btn');
@@ -12,9 +8,6 @@
   const modalBtnClose = document.querySelector('.close');
   const modalBtnSubmit = document.querySelector('.btn-submit');
 
-  /*
-    Toggle nav display on mobile
-  */
   function editNav() {
     console.log('hey');
     var x = document.getElementById('myTopnav');
@@ -25,40 +18,18 @@
     }
   }
 
-  /*
-    Toggle modal display  
-  */
   const toggleModal = () => modalbg.classList.toggle('modal-open');
 
-  /*
-    True if value's length is superior to length(default 0)
-  */
   const hasMinLength = (value, length = 0) => value.length > length;
 
-  /*
-    True if value starts with a letter, case insensitive
-  */
   const isAlphabetic = (value) => /^[a-z]/i.test(value);
 
-  /*
-    Returns false if hasMinLength is false, otherwise returns the result of isAlphabetic
-  */
   const isTextInputValid = (input) => (hasMinLength(input, 1) ? isAlphabetic(input) : false);
 
-  /*
-    True if value follows pattern nonWhitespace@nonWhitespace.nonWhitespace
-  */
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
 
-  /*
-    Check if radio group has a selection or if checkbox is checked
-  */
   const isInputChecked = (value) => value !== null;
 
-  /* 
-    Loops through each input object and checks if it validates
-    If not, sets pass to false and adds attributes to html for error messages
-  */
   function isValidationTrue(array) {
     let areAllInputsValid = true;
 
@@ -66,28 +37,23 @@
       if (input.validation(input.value)) {
         formData[index].removeAttribute('data-error-visible');
         formData[index].removeAttribute('data-error');
-      } else {
-        formData[index].setAttribute('data-error-visible', 'true');
-        formData[index].setAttribute('data-error', input.error);
-        areAllInputsValid = false;
+        return;
       }
+
+      formData[index].setAttribute('data-error-visible', 'true');
+      formData[index].setAttribute('data-error', input.error);
+      areAllInputsValid = false;
     });
 
     return areAllInputsValid;
   }
 
-  /*
-    Hides every div.formData
-  */
   function hidesForm() {
     formData.forEach((inputGroup) => {
       inputGroup.style['visibility'] = 'hidden';
     });
   }
 
-  /*
-    Create a new element with a text that displays the success of the form submission
-  */
   function createSuccessMessageElement() {
     const formSuccessMessage = document.createElement('div');
     formSuccessMessage.style.textAlign = 'center';
@@ -97,16 +63,11 @@
     modalBody.appendChild(formSuccessMessage);
   }
 
-  /*
-    Changes the value of the input to 'Fermer'
-  */
   const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
 
-  /*
-    form validation on submit
-  */
   function handleSubmit(e) {
-    // Form inputs values
+    e.preventDefault();
+
     const firstName = document.getElementById('first').value;
     const lastName = document.getElementById('last').value;
     const email = document.getElementById('email').value;
@@ -115,13 +76,6 @@
     const radioLocationSelected = document.querySelector('input[name="location"]:checked');
     const conditionCheckBox = document.querySelector('#checkbox1:checked');
 
-    /*  
-        Stores required inputs :
-        - element if radio/checkbox checked, or null
-        - value if another input type
-        - validation method for value
-        - data-error message
-      */
     const formRequiredInputs = [
       {
         value: firstName,
@@ -160,8 +114,6 @@
       },
     ];
 
-    e.preventDefault();
-
     if (isValidationTrue(formRequiredInputs)) {
       hidesForm();
 
@@ -173,18 +125,12 @@
     }
   }
 
-  /*
-    Contains all event listeners
-   */
   function loadEventListeners() {
-    // Display nav
     nav.addEventListener('click', editNav);
 
-    // Modal display toggling
     modalBtn.forEach((btn) => btn.addEventListener('click', toggleModal));
     modalBtnClose.addEventListener('click', toggleModal);
 
-    // Form submission
     form.addEventListener('submit', handleSubmit);
   }
 
