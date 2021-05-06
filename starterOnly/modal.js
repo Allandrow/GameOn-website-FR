@@ -55,16 +55,17 @@
     });
   }
 
-  function createSuccessMessageElement() {
-    const formSuccessMessage = document.createElement('div');
-    formSuccessMessage.style.textAlign = 'center';
-    formSuccessMessage.innerHTML = `
-        <p style="position:absolute;top:50%;">Merci ! Votre réservation a été reçue.</p>
-      `;
+  function displaySuccessMessage() {
+    const formSuccessMessage = document.createElement('p');
+    formSuccessMessage.className = 'success';
+    formSuccessMessage.appendChild(document.createTextNode('Merci ! Votre réservation a été reçue.'));
     modalBody.appendChild(formSuccessMessage);
   }
 
-  const changesInputAttribute = () => modalBtnSubmit.setAttribute('value', 'Fermer');
+  const changesSubmitButton = () => {
+    modalBtnSubmit.setAttribute('value', 'Fermer');
+    modalBtnSubmit.addEventListener('click', toggleModal);
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -118,11 +119,11 @@
     if (isValid(formRequiredInputs)) {
       hidesForm();
 
-      createSuccessMessageElement();
+      if (modalBtnSubmit.value !== 'Fermer') {
+        displaySuccessMessage();
+      }
 
-      changesInputAttribute();
-
-      modalBtnSubmit.addEventListener('click', toggleModal);
+      changesSubmitButton();
     }
   }
 

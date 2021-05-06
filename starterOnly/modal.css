@@ -339,6 +339,10 @@ input[data-error]::after {
   cursor: pointer;
   border: 0;
 }
+.success {
+  position: absolute;
+  top: 50%;
+}
 /* custom select styles */
 .custom-select {
   position: relative;
