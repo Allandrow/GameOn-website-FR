@@ -22,9 +22,9 @@
 
   const hasMinLength = (value, length = 0) => value.length > length;
 
-  const isStartingWithLetter = (value) => /^[a-z]/i.test(value);
+  const isValidName = (value) => /^[a-z\-\']+$/i.test(value);
 
-  const isTextInputValid = (input) => (hasMinLength(input, 1) ? isStartingWithLetter(input) : false);
+  const isTextInputValid = (input) => (hasMinLength(input, 1) ? isValidName(input) : false);
 
   // Tests if value consists of non-whitespace@non-whitespace.non-whitespace
   const isEmail = (value) => /\S+@+\S+\.\S+/.test(value);
